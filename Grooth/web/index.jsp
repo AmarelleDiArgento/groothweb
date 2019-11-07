@@ -1,3 +1,10 @@
+
+<%@page import="modelo.tabs.usuario"%>
+<%
+
+    HttpSession ses = request.getSession(true);
+    if (ses.getAttribute("log") == null) {
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,10 +46,10 @@
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">¡Bienvenido de vuelta!</h1>
                                         </div>
-                                        <form class="user" method="get" action="login">
+                                        <form class="user" method="post" action="login">
                                             <div class="form-group">
                                                 <input type="text" class="form-control form-control-user" id="inputUsuario" name="inputUsuario"
-                                                       aria-describedby="emailHelp" placeholder="Usuario" required>
+                                                       placeholder="Usuario" required>
                                             </div>
                                             <div class="form-group">
                                                 <input type="password" class="form-control form-control-user" id="inputPassword" name="inputPassword"
@@ -60,10 +67,7 @@
                                         </form>
                                         <hr>
                                         <div class="text-center">
-                                            <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                        </div>
-                                        <div class="text-center">
-                                            <a class="small" href="register.html">Create an Account!</a>
+                                            <a class="small" href="forgot-password.html">¿Perdiste tu constraseña?</a>
                                         </div>
                                     </div>
                                 </div>
@@ -90,3 +94,10 @@
     </body>
 
 </html>
+
+<%
+    } else {
+
+        response.sendRedirect("home.jsp");
+    }
+%>
