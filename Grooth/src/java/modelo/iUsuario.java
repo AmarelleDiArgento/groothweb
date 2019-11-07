@@ -25,6 +25,9 @@ public class iUsuario extends mensajero implements Usuario {
     final String Delete = "EXEC ";
     final String One = "EXEC ";
     final String All = "EXEC [dbo].[spmostrar_usuarios]";
+    final String Login = "EXEC [dbo].[splogin]\n"
+            + "		@usuario = ?,\n"
+            + "		@password = ?";
 
     public iUsuario(Connection con) {
         this.con = con;
@@ -32,7 +35,30 @@ public class iUsuario extends mensajero implements Usuario {
 
     @Override
     public usuario login(String user, String pass) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        usuario u = null;
+        try {
+            ps = con.prepareCall(Login);
+            ps.setString(1, user);
+            ps.setString(2, pass);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                u = convertir(rs);
+            } else {
+                m = notFound(user);
+            }
+        } catch (SQLException ex) {
+            m = Error(ex);
+        } finally {
+            try {
+                StatClose(ps, rs);
+            } catch (SQLException ex) {
+                m = Error(ex);
+            }
+        }
+        return u;
     }
 
     @Override
@@ -69,12 +95,12 @@ public class iUsuario extends mensajero implements Usuario {
     @Override
     public List<usuario> todos() throws SQLException {
         System.out.println("Llego");
-        PreparedStatement stat = null;
+        PreparedStatement ps = null;
         ResultSet rs = null;
         List<usuario> ul = new ArrayList<>();
 
-        stat = con.prepareCall(All);
-        rs = stat.executeQuery();
+        ps = con.prepareCall(All);
+        rs = ps.executeQuery();
         while (rs.next()) {
             ul.add(convertir(rs));
         }

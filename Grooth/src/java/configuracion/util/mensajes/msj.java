@@ -5,11 +5,13 @@
  */
 package configuracion.util.mensajes;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Sistemas
  */
-public class msj {
+public class msj implements Serializable {
 
     private String Tipo;
     private String Titulo;

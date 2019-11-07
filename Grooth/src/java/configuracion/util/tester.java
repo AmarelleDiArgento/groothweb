@@ -33,14 +33,15 @@ public class tester {
     }
 
     void test() {
+        msj m = new msj();
         try {
 
             Admin a = new Admin();
-            List<grado> lu = a.getGrado().todos();
-            System.out.println(lu);
+            //List<grado> lu = a.getGrado().todos();
+            usuario u = a.getUsuario().login("cdiaz", "79350403");
+            System.out.println(u);
 
         } catch (SQLException ex) {
-            msj m = new msj();
             m.setTipo("Code: " + ex.getErrorCode());
             m.setTipo(ex.getLocalizedMessage());
             m.setDetalle(ex.getMessage());
